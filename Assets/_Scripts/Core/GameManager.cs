@@ -52,5 +52,11 @@ public class GameManager : MonoBehaviour
                 tile.building.OnTick(tickInterval);
             }
         }
+
+        // Conway 시스템 업데이트
+        if (ConveyorSystem.Instance != null)
+        {
+            ConveyorSystem.Instance.OnTick(tickInterval);
+        }
     }
 }
