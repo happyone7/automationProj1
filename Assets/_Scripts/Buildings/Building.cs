@@ -9,6 +9,7 @@ public class Building : MonoBehaviour
     [Header("Runtime State")]
     public bool isProcessing;
     public float processTimer;
+    public float miningTimer;  // For miners
     public ItemSlot inputSlot = new ItemSlot();
     public ItemSlot outputSlot = new ItemSlot();
 
@@ -84,13 +85,41 @@ public class Building : MonoBehaviour
     // Tick - 매 프레임 호출
     public void OnTick(float deltaTime)
     {
-        if (!isProcessing) return;
-
-        processTimer += deltaTime;
-
-        if (processTimer >= Data.processTime)
+        // Miner 처리
+        if (Data.miningOutput != null)
         {
-            CompleteProcessing();
+            ProcessMining(deltaTime);
+        }
+
+        // 크래프팅 처리
+        if (isProcessing)
+        {
+            processTimer += deltaTime;
+
+            if (processTimer >= Data.processTime)
+            {
+                CompleteProcessing();
+            }
+        }
+    }
+
+    private void ProcessMining(float deltaTime)
+    {
+        // 출력 슬롯이 비었으면 채굴 시작
+        if (outputSlot.IsEmpty)
+        {
+            miningTimer += deltaTime;
+
+            if (miningTimer >= Data.miningInterval)
+            {
+                miningTimer = 0f;
+                // 아이템 생성
+                outputSlot.Add(Data.miningOutput, 1);
+            }
+        }
+        else
+        {
+            miningTimer = 0f;
         }
     }
 

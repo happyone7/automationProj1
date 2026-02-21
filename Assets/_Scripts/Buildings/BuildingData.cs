@@ -21,4 +21,8 @@ public class BuildingData : ScriptableObject
     [Header("Crafting (null = no crafting)")]
     public CraftRecipe recipe;
     public float processTime = 1f;
+
+    [Header("Miner (null = not a miner)")]
+    public Item miningOutput;      // 채굴로 얻는 아이템
+    public float miningInterval = 2f;  // 채굴 간격
 }
